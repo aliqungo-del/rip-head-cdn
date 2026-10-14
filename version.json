@@ -1,0 +1,16 @@
+{
+  "version": "1.0.20261014.1427+83d13ad2",
+  "builtAt": "2026-10-14T11:27:36.414Z",
+  "files": [
+    {
+      "name": "rip-head.css",
+      "bytes": 21248,
+      "sha256": "ec8c8a9458d7b22e2e2ac359ac683781f88d23bd12e010f45e458795655f54a6"
+    },
+    {
+      "name": "rip-head.js",
+      "bytes": 1580,
+      "sha256": "be2ee4669e7323355244dad2cd82708ed5c3a27b2314692f4692c95177afd2b1"
+    }
+  ]
+}
