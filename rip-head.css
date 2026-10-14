@@ -1,6 +1,6 @@
 /* =====================================================================
    rip-head.css — стили поля «HTML-код для <head>» одним файлом.
-   Версия: 1.0.83d13ad2   (дата сборки — в dist/manifest.json)
+   Версия: 1.0.35e170d7   (дата сборки — в dist/manifest.json)
    Источник: head/modules/*.css (порядок — head/modules.json).
    Руками не править: правки затрутся следующей сборкой.
    Состав:
@@ -560,7 +560,7 @@ html.rip-fly-debug .rip-fly-el { outline: 2px dashed #ff3b3b !important; outline
 }
 
 /* ===== 10-faq-accordion · Аккордеон FAQ (v4.3, из репозитория) ===== */
-:root { --rip-faq-css: '4.3'; }
+:root { --rip-faq-css: '4.3.2'; }
 :is(.rip-faq, .uc-rip-faq) {
   --rip-faq-time: .32s;
   --rip-faq-ease: cubic-bezier(.4, 0, .2, 1);
