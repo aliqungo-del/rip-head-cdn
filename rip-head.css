@@ -1,6 +1,6 @@
 /* =====================================================================
    rip-head.css — стили поля «HTML-код для <head>» одним файлом.
-   Версия: 1.0.0acc03dd   (дата сборки — в dist/manifest.json)
+   Версия: 1.0.20e28254   (дата сборки — в dist/manifest.json)
    Источник: head/modules/*.css (порядок — head/modules.json).
    Руками не править: правки затрутся следующей сборкой.
    Состав:
@@ -558,13 +558,15 @@ html.rip-fly-debug .rip-fly-el { outline: 2px dashed #ff3b3b !important; outline
   .rip-mq { display: none !important; }
   .rip-mq-hidden { visibility: visible !important; }
 }
-.rip-mq-deploy-probe { --rip-deploy-probe: 20261014T1; }
 
 /* ===== 10-faq-accordion · Аккордеон FAQ (v4.3, из репозитория) ===== */
 :root { --rip-faq-css: '4.3.2'; }
 :is(.rip-faq, .uc-rip-faq) {
   --rip-faq-time: .32s;
   --rip-faq-ease: cubic-bezier(.4, 0, .2, 1);
+  --rip-faq-hover-bg: #fafafa;
+  --rip-faq-hover-shadow: 0 6px 18px rgba(0, 0, 0, .10);
+  --rip-faq-focus-ring: rgba(0, 0, 0, .55);
 }
 :is(.rip-faq, .uc-rip-faq) .rip-faq-a {
   height: 0;
@@ -588,6 +590,24 @@ html.rip-fly-debug .rip-fly-el { outline: 2px dashed #ff3b3b !important; outline
 :is(.rip-faq, .uc-rip-faq) .rip-faq-item.is-open .rip-faq-q__icon {
   transform: rotate(180deg) !important;
 }
+:is(.rip-faq, .uc-rip-faq) .rip-faq-head {
+  cursor: pointer;
+}
+@media (hover: hover) {
+  :is(.rip-faq, .uc-rip-faq) .rip-faq-item {
+    transition:
+      background-color var(--rip-faq-time) var(--rip-faq-ease),
+      box-shadow var(--rip-faq-time) var(--rip-faq-ease);
+  }
+  :is(.rip-faq, .uc-rip-faq) .rip-faq-item:hover {
+    background-color: var(--rip-faq-hover-bg) !important;
+    box-shadow: var(--rip-faq-hover-shadow) !important;
+  }
+}
+:is(.rip-faq, .uc-rip-faq) .rip-faq-q:focus-visible {
+  outline: 2px solid var(--rip-faq-focus-ring);
+  outline-offset: 4px;
+}
 :is(.rip-faq, .uc-rip-faq) .t396__artboard.rip-faq-artboard-anim {
   transition: height var(--rip-faq-time) var(--rip-faq-ease) !important;
 }
@@ -598,7 +618,6 @@ html.rip-fly-debug .rip-fly-el { outline: 2px dashed #ff3b3b !important; outline
 }
 @media (prefers-reduced-motion: reduce) {
   :is(.rip-faq, .uc-rip-faq) .rip-faq-a,
-  :is(.rip-faq, .uc-rip-faq) .rip-faq-q__icon .tn-atom,
-  :is(.rip-faq, .uc-rip-faq) .rip-faq-q__icon img,
-  :is(.rip-faq, .uc-rip-faq) .rip-faq-q__icon svg { transition: none; }
+  :is(.rip-faq, .uc-rip-faq) .rip-faq-q__icon,
+  :is(.rip-faq, .uc-rip-faq) .rip-faq-item { transition: none; }
 }
