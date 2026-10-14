@@ -1,6 +1,6 @@
 /* =====================================================================
    rip-head.css — стили поля «HTML-код для <head>» одним файлом.
-   Версия: 1.0.241c5784   (дата сборки — в dist/manifest.json)
+   Версия: 1.0.19edc1fd   (дата сборки — в dist/manifest.json)
    Источник: head/modules/*.css (порядок — head/modules.json).
    Руками не править: правки затрутся следующей сборкой.
    Состав:
@@ -566,7 +566,7 @@ html.rip-fly-debug .rip-fly-el { outline: 2px dashed #ff3b3b !important; outline
   --rip-faq-ease: cubic-bezier(.4, 0, .2, 1);
   --rip-faq-hover-bg: #fafafa;
   --rip-faq-hover-shadow: 0 6px 18px rgba(0, 0, 0, .10);
-  --rip-faq-radius: 15px;
+  --rip-faq-hover-radius: 15px;
   --rip-faq-focus-ring: rgba(0, 0, 0, .55);
 }
 :is(.rip-faq, .uc-rip-faq) .rip-faq-a {
@@ -596,6 +596,7 @@ html.rip-fly-debug .rip-fly-el { outline: 2px dashed #ff3b3b !important; outline
 }
 @media (hover: hover) {
   :is(.rip-faq, .uc-rip-faq) .rip-faq-item {
+    border-radius: var(--rip-faq-hover-radius);
     transition:
       background-color var(--rip-faq-time) var(--rip-faq-ease),
       box-shadow var(--rip-faq-time) var(--rip-faq-ease);
@@ -603,7 +604,6 @@ html.rip-fly-debug .rip-fly-el { outline: 2px dashed #ff3b3b !important; outline
   :is(.rip-faq, .uc-rip-faq) .rip-faq-item:hover {
     background-color: var(--rip-faq-hover-bg) !important;
     box-shadow: var(--rip-faq-hover-shadow) !important;
-    border-radius: var(--rip-faq-radius);
   }
 }
 :is(.rip-faq, .uc-rip-faq) .rip-faq-q:focus-visible {
