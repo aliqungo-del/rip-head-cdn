@@ -1,6 +1,6 @@
 /* =====================================================================
    rip-head.css — стили поля «HTML-код для <head>» одним файлом.
-   Версия: 1.0.19edc1fd   (дата сборки — в dist/manifest.json)
+   Версия: 1.0.873b0148   (дата сборки — в dist/manifest.json)
    Источник: head/modules/*.css (порядок — head/modules.json).
    Руками не править: правки затрутся следующей сборкой.
    Состав:
@@ -13,6 +13,7 @@
    08-crm-form-programs     4178 симв.  Автовыбор программ в форме (ripf)
    09-logo-marquee          1616 симв.  Лента логотипов
    10-faq-accordion         3790 симв.  Аккордеон FAQ (v4.3, из репозитория)
+   12-rip-advantages-slider   6639 симв.  Слайдер «Наши преимущества» (v1.0.0, из репозитория)
    ===================================================================== */
 
 /* ===== 01-header-offset · Отступ под шапку (--rip-h) ===== */
@@ -622,4 +623,82 @@ html.rip-fly-debug .rip-fly-el { outline: 2px dashed #ff3b3b !important; outline
   :is(.rip-faq, .uc-rip-faq) .rip-faq-a,
   :is(.rip-faq, .uc-rip-faq) .rip-faq-q__icon,
   :is(.rip-faq, .uc-rip-faq) .rip-faq-item { transition: none; }
+}
+
+/* ===== 12-rip-advantages-slider · Слайдер «Наши преимущества» (v1.0.0, из репозитория) ===== */
+:root { --rip-slider-css: '1.0.0'; }
+:is(.rip-slider, .uc-rip-slider) {
+  --rip-slider-time: .42s;
+  --rip-slider-ease: cubic-bezier(.22, .61, .36, 1);
+  --rip-slider-hover-bg: #f4f4f4;
+  --rip-slider-off-opacity: .3;
+  --rip-slider-focus-ring: rgba(0, 0, 0, .55);
+}
+:is(.rip-slider, .uc-rip-slider) .rip-slider__viewport {
+  overflow: hidden;
+  touch-action: pan-y;
+}
+:is(.rip-slider, .uc-rip-slider) .rip-slider__track {
+  display: inline-block;
+  white-space: nowrap;
+  font-size: 0;
+  transform: translateX(0);
+  will-change: transform;
+  transition: transform var(--rip-slider-time) var(--rip-slider-ease) !important;
+}
+:is(.rip-slider, .uc-rip-slider) .rip-slider__track > .tn-molecule {
+  display: block;
+  white-space: nowrap;
+}
+:is(.rip-slider, .uc-rip-slider) .rip-slider-card {
+  display: inline-block;
+  vertical-align: top;
+  white-space: normal;
+  text-align: left;
+  font-size: 1rem;
+}
+:is(.rip-slider, .uc-rip-slider) .rip-slider-card > .tn-molecule {
+  display: block;
+}
+:is(.rip-slider, .uc-rip-slider) .rip-slider__track.is-dragging {
+  transition: none !important;
+  cursor: grabbing !important;
+}
+:is(.rip-slider, .uc-rip-slider) .rip-slider__track.is-jumping {
+  transition: none !important;
+}
+:is(.rip-slider, .uc-rip-slider) .rip-slider__viewport {
+  cursor: grab;
+  -webkit-user-select: none;
+  user-select: none;
+}
+:is(.rip-slider, .uc-rip-slider) .rip-slider__btn {
+  cursor: pointer;
+}
+@media (hover: hover) {
+  :is(.rip-slider, .uc-rip-slider) .rip-slider__btn {
+    transition: background-color var(--rip-slider-time) var(--rip-slider-ease),
+                opacity var(--rip-slider-time) var(--rip-slider-ease);
+  }
+  :is(.rip-slider, .uc-rip-slider) .rip-slider__btn:not(.is-off):hover {
+    background-color: var(--rip-slider-hover-bg) !important;
+  }
+}
+:is(.rip-slider, .uc-rip-slider) .rip-slider__btn.is-off {
+  opacity: var(--rip-slider-off-opacity) !important;
+  cursor: default;
+}
+:is(.rip-slider, .uc-rip-slider) .rip-slider__btn:focus-visible,
+:is(.rip-slider, .uc-rip-slider) .rip-slider:focus-visible {
+  outline: 2px solid var(--rip-slider-focus-ring);
+  outline-offset: 3px;
+}
+@media (prefers-reduced-motion: reduce) {
+  :is(.rip-slider, .uc-rip-slider) {
+    --rip-slider-time: 0s;
+  }
+  :is(.rip-slider, .uc-rip-slider) .rip-slider__track,
+  :is(.rip-slider, .uc-rip-slider) .rip-slider__btn {
+    transition: none !important;
+  }
 }
