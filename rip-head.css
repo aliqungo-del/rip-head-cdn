@@ -1,6 +1,6 @@
 /* =====================================================================
    rip-head.css — стили поля «HTML-код для <head>» одним файлом.
-   Версия: 1.0.827fffc9   (дата сборки — в dist/manifest.json)
+   Версия: 1.0.5d2d2605   (дата сборки — в dist/manifest.json)
    Источник: head/modules/*.css (порядок — head/modules.json).
    Руками не править: правки затрутся следующей сборкой.
    Состав:
@@ -631,12 +631,24 @@ html.rip-fly-debug .rip-fly-el { outline: 2px dashed #ff3b3b !important; outline
   --rip-slider-time: .42s;
   --rip-slider-ease: cubic-bezier(.22, .61, .36, 1);
   --rip-slider-hover-bg: #f4f4f4;
-  --rip-slider-off-opacity: .3;
+  --rip-slider-btn-radius: 20px;
+  --rip-slider-off-opacity: .22;
   --rip-slider-focus-ring: rgba(0, 0, 0, .55);
+  --rip-slider-edge: 70px;
 }
 :is(.rip-slider, .uc-rip-slider) .rip-slider__viewport {
   overflow: hidden;
   touch-action: pan-y;
+}
+:is(.rip-slider, .uc-rip-slider) .rip-slider__viewport {
+  --rip-slider-edge-l: var(--rip-slider-edge);
+  --rip-slider-edge-r: var(--rip-slider-edge);
+  -webkit-mask-image: linear-gradient(90deg,
+    transparent 0, #000 var(--rip-slider-edge-l),
+    #000 calc(100% - var(--rip-slider-edge-r)), transparent 100%);
+  mask-image: linear-gradient(90deg,
+    transparent 0, #000 var(--rip-slider-edge-l),
+    #000 calc(100% - var(--rip-slider-edge-r)), transparent 100%);
 }
 :is(.rip-slider, .uc-rip-slider) .rip-slider__track {
   display: inline-block;
@@ -677,18 +689,23 @@ html.rip-fly-debug .rip-fly-el { outline: 2px dashed #ff3b3b !important; outline
 }
 :is(.rip-slider, .uc-rip-slider) .rip-slider__btn {
   cursor: pointer;
+  border-radius: var(--rip-slider-btn-radius);
 }
 @media (hover: hover) {
   :is(.rip-slider, .uc-rip-slider) .rip-slider__btn {
     transition: background-color var(--rip-slider-time) var(--rip-slider-ease),
+                border-color var(--rip-slider-time) var(--rip-slider-ease),
+                box-shadow var(--rip-slider-time) var(--rip-slider-ease),
                 opacity var(--rip-slider-time) var(--rip-slider-ease);
   }
   :is(.rip-slider, .uc-rip-slider) .rip-slider__btn:not(.is-off):hover {
     background-color: var(--rip-slider-hover-bg) !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, .10) !important;
   }
 }
 :is(.rip-slider, .uc-rip-slider) .rip-slider__btn.is-off {
   opacity: var(--rip-slider-off-opacity) !important;
+  box-shadow: none !important;
   cursor: default;
 }
 :is(.rip-slider, .uc-rip-slider) .rip-slider__btn:focus-visible,
