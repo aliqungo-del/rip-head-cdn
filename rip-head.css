@@ -1,6 +1,6 @@
 /* =====================================================================
    rip-head.css — стили поля «HTML-код для <head>» одним файлом.
-   Версия: 1.0.5d2d2605   (дата сборки — в dist/manifest.json)
+   Версия: 1.0.d75c39cb   (дата сборки — в dist/manifest.json)
    Источник: head/modules/*.css (порядок — head/modules.json).
    Руками не править: правки затрутся следующей сборкой.
    Состав:
@@ -635,6 +635,7 @@ html.rip-fly-debug .rip-fly-el { outline: 2px dashed #ff3b3b !important; outline
   --rip-slider-off-opacity: .22;
   --rip-slider-focus-ring: rgba(0, 0, 0, .55);
   --rip-slider-edge: 70px;
+  --rip-slider-fade-bg: #f6e9e4;
 }
 :is(.rip-slider, .uc-rip-slider) .rip-slider__viewport {
   overflow: hidden;
@@ -643,12 +644,40 @@ html.rip-fly-debug .rip-fly-el { outline: 2px dashed #ff3b3b !important; outline
 :is(.rip-slider, .uc-rip-slider) .rip-slider__viewport {
   --rip-slider-edge-l: var(--rip-slider-edge);
   --rip-slider-edge-r: var(--rip-slider-edge);
-  -webkit-mask-image: linear-gradient(90deg,
-    transparent 0, #000 var(--rip-slider-edge-l),
-    #000 calc(100% - var(--rip-slider-edge-r)), transparent 100%);
-  mask-image: linear-gradient(90deg,
-    transparent 0, #000 var(--rip-slider-edge-l),
-    #000 calc(100% - var(--rip-slider-edge-r)), transparent 100%);
+  --rip-slider-fade-l: 1;
+  --rip-slider-fade-r: 1;
+  position: relative;
+}
+:is(.rip-slider, .uc-rip-slider) .rip-slider__viewport::before,
+:is(.rip-slider, .uc-rip-slider) .rip-slider__viewport::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 2;
+  pointer-events: none;
+  transition: opacity var(--rip-slider-time) var(--rip-slider-ease);
+  opacity: 0;
+}
+:is(.rip-slider, .uc-rip-slider) .rip-slider__viewport::before {
+  left: 0;
+  width: var(--rip-slider-edge-l);
+  background: linear-gradient(90deg,
+    var(--rip-slider-fade-bg) 0%, rgba(0, 0, 0, 0) 100%);
+  opacity: var(--rip-slider-fade-l);
+}
+:is(.rip-slider, .uc-rip-slider) .rip-slider__viewport::after {
+  right: 0;
+  width: var(--rip-slider-edge-r);
+  background: linear-gradient(270deg,
+    var(--rip-slider-fade-bg) 0%, rgba(0, 0, 0, 0) 100%);
+  opacity: var(--rip-slider-fade-r);
+}
+@media (prefers-reduced-motion: reduce) {
+  :is(.rip-slider, .uc-rip-slider) .rip-slider__viewport::before,
+  :is(.rip-slider, .uc-rip-slider) .rip-slider__viewport::after {
+    transition: none;
+  }
 }
 :is(.rip-slider, .uc-rip-slider) .rip-slider__track {
   display: inline-block;
