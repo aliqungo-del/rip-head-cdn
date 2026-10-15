@@ -1,6 +1,6 @@
 /* =====================================================================
    rip-head.css — стили поля «HTML-код для <head>» одним файлом.
-   Версия: 1.0.53e296ac   (дата сборки — в dist/manifest.json)
+   Версия: 1.0.827fffc9   (дата сборки — в dist/manifest.json)
    Источник: head/modules/*.css (порядок — head/modules.json).
    Руками не править: правки затрутся следующей сборкой.
    Состав:
@@ -656,6 +656,12 @@ html.rip-fly-debug .rip-fly-el { outline: 2px dashed #ff3b3b !important; outline
   white-space: normal;
   text-align: left;
   font-size: 1rem;
+}
+:is(.rip-slider, .uc-rip-slider) .rip-slider-card__name {
+  min-height: 48px;
+}
+:is(.rip-slider, .uc-rip-slider) .rip-slider-card__text {
+  min-height: 84px;
 }
 :is(.rip-slider, .uc-rip-slider) .rip-slider__track.is-dragging {
   transition: none !important;
