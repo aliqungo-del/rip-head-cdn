@@ -1,6 +1,6 @@
 /* =====================================================================
    rip-head.css — стили поля «HTML-код для <head>» одним файлом.
-   Версия: 1.0.4973a054   (дата сборки — в dist/manifest.json)
+   Версия: 1.0.8af73c35   (дата сборки — в dist/manifest.json)
    Источник: head/modules/*.css (порядок — head/modules.json).
    Руками не править: правки затрутся следующей сборкой.
    Состав:
@@ -740,12 +740,12 @@ html.rip-fly-debug .rip-fly-el { outline: 2px dashed #ff3b3b !important; outline
   pointer-events: none;
   visibility: hidden;
   opacity: 0;
-  transition: opacity .16s linear, visibility 0s linear .16s;
+  transition: opacity .07s linear, visibility 0s linear .07s;
 }
 :is(.rip-tabmenu, .uc-rip-tabmenu).is-open .t396__artboard {
   visibility: visible;
   opacity: 1;
-  transition: opacity .16s linear, visibility 0s linear 0s;
+  transition: none;
 }
 :is(.rip-tabmenu, .uc-rip-tabmenu).is-open .rip-tabmenu-panel { pointer-events: auto; }
 :is(.rip-tabmenu, .uc-rip-tabmenu) .rip-tabmenu-link { cursor: pointer; }
