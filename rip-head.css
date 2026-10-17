@@ -1,6 +1,6 @@
 /* =====================================================================
    rip-head.css — стили поля «HTML-код для <head>» одним файлом.
-   Версия: 1.0.b34917aa   (дата сборки — в dist/manifest.json)
+   Версия: 1.0.12f61699   (дата сборки — в dist/manifest.json)
    Источник: head/modules/*.css (порядок — head/modules.json).
    Руками не править: правки затрутся следующей сборкой.
    Состав:
@@ -748,8 +748,29 @@ html.rip-fly-debug .rip-fly-el { outline: 2px dashed #ff3b3b !important; outline
   transition: opacity .07s linear, visibility 0s linear 0s;
 }
 :is(.rip-tabmenu, .uc-rip-tabmenu).is-open .rip-tabmenu-panel { pointer-events: auto; }
-:is(.rip-tabmenu, .uc-rip-tabmenu) .rip-tabmenu-link { cursor: pointer; }
-:is(.rip-tabmenu, .uc-rip-tabmenu) .rip-tabmenu-link:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+:is(.rip-tabmenu, .uc-rip-tabmenu) {
+  --rip-tabmenu-hover-bg: rgba(255, 255, 255, .10);
+  --rip-tabmenu-hover-time: .12s;
+  --rip-tabmenu-hover-ease: ease;
+}
+:is(.rip-tabmenu, .uc-rip-tabmenu) .rip-tabmenu-link {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  cursor: pointer;
+  transition: background-color var(--rip-tabmenu-hover-time) var(--rip-tabmenu-hover-ease);
+}
+:is(.rip-tabmenu, .uc-rip-tabmenu) .rip-tabmenu-panel .tn-atom {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+}
+:is(.rip-tabmenu, .uc-rip-tabmenu) .rip-tabmenu-link:focus-visible { outline: 2px solid #fff; outline-offset: -2px; }
+@media (hover: hover) {
+  :is(.rip-tabmenu, .uc-rip-tabmenu) .rip-tabmenu-link:hover {
+    background-color: var(--rip-tabmenu-hover-bg) !important;
+  }
+}
 :is(.rip-tabmenu, .uc-rip-tabmenu) .rip-tabmenu-panel::-webkit-scrollbar { width: 8px; }
 :is(.rip-tabmenu, .uc-rip-tabmenu) .rip-tabmenu-panel::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, .28); border-radius: 8px; }
 html:not(.rip-editor) .rip-tabmenu-host,
