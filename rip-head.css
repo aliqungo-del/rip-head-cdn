@@ -1,6 +1,6 @@
 /* =====================================================================
    rip-head.css — стили поля «HTML-код для <head>» одним файлом.
-   Версия: 1.0.12f61699   (дата сборки — в dist/manifest.json)
+   Версия: 1.0.6a6dc261   (дата сборки — в dist/manifest.json)
    Источник: head/modules/*.css (порядок — head/modules.json).
    Руками не править: правки затрутся следующей сборкой.
    Состав:
@@ -15,6 +15,7 @@
    10-faq-accordion         3790 симв.  Аккордеон FAQ (v4.3, из репозитория)
    12-rip-advantages-slider   6639 симв.  Слайдер «Наши преимущества» (v1.0.0, из репозитория)
    13-header-tab-menu       4466 симв.  Всплывающее меню вкладки шапки (v1.00, из репозитория)
+   14-price-programs        4506 симв.  Стоимость обучения: поиск, фильтры, аккордеон
    ===================================================================== */
 
 /* ===== 01-header-offset · Отступ под шапку (--rip-h) ===== */
@@ -791,4 +792,81 @@ html.rip-editor :is(.rip-tabmenu, .uc-rip-tabmenu) .t396__artboard {
   visibility: visible !important;
   opacity: 1 !important;
   pointer-events: auto !important;
+}
+
+/* ===== 14-price-programs · Стоимость обучения: поиск, фильтры, аккордеон ===== */
+:is(.rip-price, .uc-rip-price) {
+  --rip-price-css: '1.0.0';
+  --rip-price-time: .28s;
+  --rip-price-ease: cubic-bezier(.4, 0, .2, 1);
+}
+:is(.rip-price, .uc-rip-price) .rip-price-item--template,
+:is(.rip-price, .uc-rip-price) .rip-price-option--template {
+  display: none !important;
+}
+:is(.rip-price, .uc-rip-price) .rip-price-body {
+  height: 0;
+  overflow: hidden;
+  transition: height var(--rip-price-time) var(--rip-price-ease) !important;
+}
+:is(.rip-price, .uc-rip-price).rip-price-no-anim .rip-price-body {
+  transition: none !important;
+}
+:is(.rip-price, .uc-rip-price) .rip-price-item__icon,
+:is(.rip-price, .uc-rip-price) .rip-price-filter__icon {
+  transform-origin: 50% 50%;
+  transition: transform var(--rip-price-time) var(--rip-price-ease) !important;
+}
+:is(.rip-price, .uc-rip-price) .rip-price-item.is-open .rip-price-item__icon,
+:is(.rip-price, .uc-rip-price) .rip-price-filter.is-open .rip-price-filter__icon {
+  transform: rotate(180deg) !important;
+}
+:is(.rip-price, .uc-rip-price) .rip-price-filter:not(.is-open) .rip-price-filter__options {
+  display: none !important;
+}
+:is(.rip-price, .uc-rip-price) .rip-price-option__check {
+  opacity: 0;
+  transition: opacity .15s linear;
+}
+:is(.rip-price, .uc-rip-price) .rip-price-option.is-checked .rip-price-option__check {
+  opacity: 1;
+}
+:is(.rip-price, .uc-rip-price) .rip-price-head,
+:is(.rip-price, .uc-rip-price) .rip-price-filter__head,
+:is(.rip-price, .uc-rip-price) .rip-price-option,
+:is(.rip-price, .uc-rip-price) .rip-price__reset,
+:is(.rip-price, .uc-rip-price) .rip-price__more,
+:is(.rip-price, .uc-rip-price) .rip-price__clear {
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+}
+:is(.rip-price, .uc-rip-price) .rip-price-head:focus-visible,
+:is(.rip-price, .uc-rip-price) .rip-price-filter__head:focus-visible,
+:is(.rip-price, .uc-rip-price) .rip-price-option:focus-visible,
+:is(.rip-price, .uc-rip-price) .rip-price__reset:focus-visible,
+:is(.rip-price, .uc-rip-price) .rip-price__more:focus-visible,
+:is(.rip-price, .uc-rip-price) .rip-price__clear:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+:is(.rip-price, .uc-rip-price) .rip-price__empty[hidden],
+:is(.rip-price, .uc-rip-price) .rip-price__more[hidden],
+:is(.rip-price, .uc-rip-price) .rip-price__count[hidden],
+:is(.rip-price, .uc-rip-price) .rip-price-item__link[hidden] {
+  display: none !important;
+}
+:is(.rip-price, .uc-rip-price) .rip-price__clear {
+  visibility: hidden;
+}
+:is(.rip-price, .uc-rip-price) .rip-price__clear.is-visible {
+  visibility: visible;
+}
+@media (prefers-reduced-motion: reduce) {
+  :is(.rip-price, .uc-rip-price) .rip-price-body,
+  :is(.rip-price, .uc-rip-price) .rip-price-item__icon,
+  :is(.rip-price, .uc-rip-price) .rip-price-filter__icon,
+  :is(.rip-price, .uc-rip-price) .rip-price-option__check {
+    transition: none !important;
+  }
 }
