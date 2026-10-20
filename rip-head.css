@@ -1,6 +1,6 @@
 /* =====================================================================
    rip-head.css — стили поля «HTML-код для <head>» одним файлом.
-   Версия: 1.0.470c9a35   (дата сборки — в dist/manifest.json)
+   Версия: 1.0.9e121e03   (дата сборки — в dist/manifest.json)
    Источник: head/modules/*.css (порядок — head/modules.json).
    Руками не править: правки затрутся следующей сборкой.
    Состав:
@@ -15,7 +15,7 @@
    10-faq-accordion         3790 симв.  Аккордеон FAQ (v4.3, из репозитория)
    12-rip-advantages-slider   6639 симв.  Слайдер «Наши преимущества» (v1.0.0, из репозитория)
    13-header-tab-menu       4466 симв.  Всплывающее меню вкладки шапки (v1.00, из репозитория)
-   14-price-programs        6395 симв.  Стоимость обучения: поиск, фильтры, аккордеон
+   14-price-programs        6411 симв.  Стоимость обучения: поиск, фильтры, аккордеон
    ===================================================================== */
 
 /* ===== 01-header-offset · Отступ под шапку (--rip-h) ===== */
@@ -841,6 +841,7 @@ html.rip-editor :is(.rip-tabmenu, .uc-rip-tabmenu) .t396__artboard {
 :is(.rip-price, .uc-rip-price) .rip-price-filter__head > .tn-molecule,
 :is(.rip-price, .uc-rip-price) .rip-price-head > .tn-molecule {
   align-items: center;
+  height: 100%;
 }
 :is(.rip-price, .uc-rip-price) .rip-price-filter__options {
   height: 0;
