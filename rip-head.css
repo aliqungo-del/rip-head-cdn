@@ -1,6 +1,6 @@
 /* =====================================================================
    rip-head.css — стили поля «HTML-код для <head>» одним файлом.
-   Версия: 1.0.bbc57e6e   (дата сборки — в dist/manifest.json)
+   Версия: 1.0.4d05a5e2   (дата сборки — в dist/manifest.json)
    Источник: head/modules/*.css (порядок — head/modules.json).
    Руками не править: правки затрутся следующей сборкой.
    Состав:
@@ -15,7 +15,7 @@
    10-faq-accordion         3790 симв.  Аккордеон FAQ (v4.3, из репозитория)
    12-rip-advantages-slider   6639 симв.  Слайдер «Наши преимущества» (v1.0.0, из репозитория)
    13-header-tab-menu       4466 симв.  Всплывающее меню вкладки шапки (v1.00, из репозитория)
-   14-price-programs        6136 симв.  Стоимость обучения: поиск, фильтры, аккордеон
+   14-price-programs        6104 симв.  Стоимость обучения: поиск, фильтры, аккордеон
    ===================================================================== */
 
 /* ===== 01-header-offset · Отступ под шапку (--rip-h) ===== */
@@ -799,12 +799,9 @@ html.rip-editor :is(.rip-tabmenu, .uc-rip-tabmenu) .t396__artboard {
   --rip-price-css: '1.0.0';
   --rip-price-time: .28s;
   --rip-price-ease: cubic-bezier(.4, 0, .2, 1);
-  --rip-price-mark: #ffe58a;
-  --rip-price-suggest-active: #eef4fa;
 }
 :is(.rip-price, .uc-rip-price) .rip-price-item--template,
-:is(.rip-price, .uc-rip-price) .rip-price-option--template,
-:is(.rip-price, .uc-rip-price) .rip-price-suggest__item--template {
+:is(.rip-price, .uc-rip-price) .rip-price-option--template {
   display: none !important;
 }
 :is(.rip-price, .uc-rip-price) .rip-price-body {
@@ -823,6 +820,23 @@ html.rip-editor :is(.rip-tabmenu, .uc-rip-tabmenu) .t396__artboard {
 :is(.rip-price, .uc-rip-price) .rip-price-item.is-open .rip-price-item__icon,
 :is(.rip-price, .uc-rip-price) .rip-price-filter.is-open .rip-price-filter__icon {
   transform: rotate(180deg) !important;
+}
+:is(.rip-price, .uc-rip-price) .rip-price-filter__icon .tn-atom,
+:is(.rip-price, .uc-rip-price) .rip-price-item__icon .tn-atom {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  line-height: 0;
+}
+:is(.rip-price, .uc-rip-price) .rip-price-filter__icon .tn-atom img,
+:is(.rip-price, .uc-rip-price) .rip-price-filter__icon .tn-atom svg,
+:is(.rip-price, .uc-rip-price) .rip-price-item__icon .tn-atom img,
+:is(.rip-price, .uc-rip-price) .rip-price-item__icon .tn-atom svg {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 :is(.rip-price, .uc-rip-price) .rip-price-filter__options {
   height: 0;
@@ -853,28 +867,13 @@ html.rip-editor :is(.rip-tabmenu, .uc-rip-tabmenu) .t396__artboard {
   width: 100%;
   height: 100%;
 }
-:is(.rip-price, .uc-rip-price) .rip-price__suggest[hidden],
-:is(.rip-price, .uc-rip-price) .rip-price-suggest__empty[hidden] {
-  display: none !important;
-}
-:is(.rip-price, .uc-rip-price) .rip-price-suggest__item {
-  cursor: pointer;
-}
-:is(.rip-price, .uc-rip-price) .rip-price-suggest__item.is-active {
-  background: var(--rip-price-suggest-active, #eef4fa) !important;
-}
-:is(.rip-price, .uc-rip-price) .rip-price-suggest mark {
-  background: var(--rip-price-mark, #ffe58a);
-  color: inherit;
-  padding: 0 1px;
-  border-radius: 2px;
-}
 :is(.rip-price, .uc-rip-price) .rip-price-head,
 :is(.rip-price, .uc-rip-price) .rip-price-filter__head,
 :is(.rip-price, .uc-rip-price) .rip-price-option,
 :is(.rip-price, .uc-rip-price) .rip-price__reset,
 :is(.rip-price, .uc-rip-price) .rip-price__more,
-:is(.rip-price, .uc-rip-price) .rip-price__clear {
+:is(.rip-price, .uc-rip-price) .rip-price__clear,
+:is(.rip-price, .uc-rip-price) .rip-price__search-icon {
   cursor: pointer;
   -webkit-user-select: none;
   user-select: none;
