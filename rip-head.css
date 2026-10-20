@@ -1,6 +1,6 @@
 /* =====================================================================
    rip-head.css — стили поля «HTML-код для <head>» одним файлом.
-   Версия: 1.0.e4f27d2a   (дата сборки — в dist/manifest.json)
+   Версия: 1.0.bee012e2   (дата сборки — в dist/manifest.json)
    Источник: head/modules/*.css (порядок — head/modules.json).
    Руками не править: правки затрутся следующей сборкой.
    Состав:
@@ -15,7 +15,7 @@
    10-faq-accordion         3790 симв.  Аккордеон FAQ (v4.3, из репозитория)
    12-rip-advantages-slider   6639 симв.  Слайдер «Наши преимущества» (v1.0.0, из репозитория)
    13-header-tab-menu       4466 симв.  Всплывающее меню вкладки шапки (v1.00, из репозитория)
-   14-price-programs        8118 симв.  Стоимость обучения: поиск, фильтры, аккордеон
+   14-price-programs        9223 симв.  Стоимость обучения: поиск, фильтры, аккордеон
    ===================================================================== */
 
 /* ===== 01-header-offset · Отступ под шапку (--rip-h) ===== */
@@ -890,17 +890,42 @@ html.rip-editor :is(.rip-tabmenu, .uc-rip-tabmenu) .t396__artboard {
 :is(.rip-price, .uc-rip-price) .rip-price__reset,
 :is(.rip-price, .uc-rip-price) .rip-price__more,
 :is(.rip-price, .uc-rip-price) .rip-price__clear,
-:is(.rip-price, .uc-rip-price) .rip-price__search-icon {
+:is(.rip-price, .uc-rip-price) .rip-price__search-icon,
+:is(.rip-price, .uc-rip-price) .rip-price-item__link {
   cursor: pointer;
   -webkit-user-select: none;
   user-select: none;
+}
+:is(.rip-price, .uc-rip-price) .rip-price__reset,
+:is(.rip-price, .uc-rip-price) .rip-price__more,
+:is(.rip-price, .uc-rip-price) .rip-price__clear,
+:is(.rip-price, .uc-rip-price) .rip-price-item__link {
+  transition: filter .18s ease, opacity .18s ease, transform .18s ease;
+}
+@media (hover: hover) {
+  :is(.rip-price, .uc-rip-price) .rip-price__reset:hover,
+  :is(.rip-price, .uc-rip-price) .rip-price__more:hover,
+  :is(.rip-price, .uc-rip-price) .rip-price__clear:hover {
+    filter: brightness(.94);
+    transform: translateY(-1px);
+  }
+  :is(.rip-price, .uc-rip-price) .rip-price-item__link:hover {
+    opacity: .72;
+  }
+}
+:is(.rip-price, .uc-rip-price) .rip-price__reset:active,
+:is(.rip-price, .uc-rip-price) .rip-price__more:active,
+:is(.rip-price, .uc-rip-price) .rip-price__clear:active {
+  filter: brightness(.9);
+  transform: translateY(0);
 }
 :is(.rip-price, .uc-rip-price) .rip-price-head:focus-visible,
 :is(.rip-price, .uc-rip-price) .rip-price-filter__head:focus-visible,
 :is(.rip-price, .uc-rip-price) .rip-price-option:focus-visible,
 :is(.rip-price, .uc-rip-price) .rip-price__reset:focus-visible,
 :is(.rip-price, .uc-rip-price) .rip-price__more:focus-visible,
-:is(.rip-price, .uc-rip-price) .rip-price__clear:focus-visible {
+:is(.rip-price, .uc-rip-price) .rip-price__clear:focus-visible,
+:is(.rip-price, .uc-rip-price) .rip-price-item__link:focus-visible {
   outline: 2px solid currentColor;
   outline-offset: 3px;
 }
