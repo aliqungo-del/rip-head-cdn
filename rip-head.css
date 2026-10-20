@@ -1,6 +1,6 @@
 /* =====================================================================
    rip-head.css — стили поля «HTML-код для <head>» одним файлом.
-   Версия: 1.0.1f6ccda8   (дата сборки — в dist/manifest.json)
+   Версия: 1.0.e4f27d2a   (дата сборки — в dist/manifest.json)
    Источник: head/modules/*.css (порядок — head/modules.json).
    Руками не править: правки затрутся следующей сборкой.
    Состав:
@@ -15,7 +15,7 @@
    10-faq-accordion         3790 симв.  Аккордеон FAQ (v4.3, из репозитория)
    12-rip-advantages-slider   6639 симв.  Слайдер «Наши преимущества» (v1.0.0, из репозитория)
    13-header-tab-menu       4466 симв.  Всплывающее меню вкладки шапки (v1.00, из репозитория)
-   14-price-programs        6995 симв.  Стоимость обучения: поиск, фильтры, аккордеон
+   14-price-programs        8118 симв.  Стоимость обучения: поиск, фильтры, аккордеон
    ===================================================================== */
 
 /* ===== 01-header-offset · Отступ под шапку (--rip-h) ===== */
@@ -915,6 +915,53 @@ html.rip-editor :is(.rip-tabmenu, .uc-rip-tabmenu) .t396__artboard {
 }
 :is(.rip-price, .uc-rip-price) .rip-price__clear.is-visible {
   visibility: visible;
+}
+:is(.rip-price, .uc-rip-price) .rip-price-item__variants {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+:is(.rip-price, .uc-rip-price) .rip-price-variant {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+  box-sizing: border-box;
+  padding: 9px 12px;
+  background: #f7fafc;
+  border: 1px solid #e3edf6;
+  border-radius: 9px;
+  font-family: inherit;
+}
+:is(.rip-price, .uc-rip-price) .rip-price-variant__hours {
+  flex: 0 0 112px;
+  font-size: 13px;
+  line-height: 1.35;
+  font-weight: 700;
+  color: #27445f;
+}
+:is(.rip-price, .uc-rip-price) .rip-price-variant__form {
+  flex: 1 1 auto;
+  font-size: 13px;
+  line-height: 1.35;
+  color: #5e7891;
+}
+:is(.rip-price, .uc-rip-price) .rip-price-variant__price {
+  flex: 0 0 auto;
+  font-size: 13px;
+  line-height: 1.35;
+  font-weight: 700;
+  color: #172b42;
+  white-space: nowrap;
+}
+@media (max-width: 960px) {
+  :is(.rip-price, .uc-rip-price) .rip-price-variant {
+    flex-wrap: wrap;
+    gap: 3px 10px;
+  }
+  :is(.rip-price, .uc-rip-price) .rip-price-variant__hours {
+    flex: 1 1 100%;
+  }
 }
 @media (prefers-reduced-motion: reduce) {
   :is(.rip-price, .uc-rip-price) .rip-price-body,
