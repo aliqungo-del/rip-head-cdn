@@ -1,6 +1,6 @@
 /* =====================================================================
    rip-head.css — стили поля «HTML-код для <head>» одним файлом.
-   Версия: 1.0.bcd1a8a6   (дата сборки — в dist/manifest.json)
+   Версия: 1.0.002226a3   (дата сборки — в dist/manifest.json)
    Источник: head/modules/*.css (порядок — head/modules.json).
    Руками не править: правки затрутся следующей сборкой.
    Состав:
@@ -1001,7 +1001,7 @@ html.rip-editor :is(.rip-tabmenu, .uc-rip-tabmenu) .t396__artboard {
 
 /* ===== 15-programs-search · Поиск по программам в потоке (Zero Block) ===== */
 .rip-search {
-  --rip-search-css: '1.0.0';
+  --rip-search-css: '1.1.0';
   --rip-search-time: .18s;
   --rip-search-ease: cubic-bezier(.4, 0, .2, 1);
   position: relative;
