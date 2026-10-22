@@ -1,12 +1,11 @@
 /* =====================================================================
    rip-head.css — стили поля «HTML-код для <head>» одним файлом.
-   Версия: 1.0.3e67c504   (дата сборки — в dist/manifest.json)
+   Версия: 1.0.03a26716   (дата сборки — в dist/manifest.json)
    Источник: head/modules/*.css (порядок — head/modules.json).
    Руками не править: правки затрутся следующей сборкой.
    Состав:
    01-header-offset          316 симв.  Отступ под шапку (--rip-h)
-   02-burger-anim           3362 симв.  Бургер → крестик
-   03-rip-menu-mobile      20113 симв.  Мобильное меню (до 1200px)
+   03-rip-menu-mobile       8489 симв.  Мобильное меню v4 + бургер (панель из-под шапки, полёт страниц)
    04-rip-menu-main         5819 симв.  Основное меню (шире 1200px)
    05-menu-underline        2055 симв.  Полоска под пунктами меню
    06-fly-up-blocks          910 симв.  Взлёт блоков: стили
@@ -26,13 +25,151 @@
 @media screen and (max-width: 1200px) { :root { --rip-h: 93px; } }
 @media screen and (max-width: 480px)  { :root { --rip-h: 78px; } }
 
-/* ===== 02-burger-anim · Бургер → крестик ===== */
+/* ===== 03-rip-menu-mobile · Мобильное меню v4 + бургер (панель из-под шапки, полёт страниц) ===== */
+:root { --rip-mm-css: '4.0'; }
+:is(.t-rec.uc-rip-menu-mobile, .rip-mm2) {
+  --rmm-time: .42s;
+  --rmm-ease: cubic-bezier(.4, 0, .2, 1);
+  --rmm-z: 6000;
+  position: fixed !important;
+  left: 0 !important;
+  right: 0 !important;
+  top: var(--rmm-top, 0px) !important;
+  bottom: auto !important;
+  width: auto !important;
+  height: auto !important;
+  max-height: calc(100vh - var(--rmm-top, 0px)) !important;
+  max-height: calc(100dvh - var(--rmm-top, 0px)) !important;
+  z-index: var(--rmm-z) !important;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  visibility: hidden;
+  opacity: 1 !important;
+  pointer-events: none;
+  transform: translateY(-100%) !important;
+  transition: transform var(--rmm-time) var(--rmm-ease),
+              visibility 0s linear var(--rmm-time);
+  will-change: transform;
+}
+:is(.t-rec.uc-rip-menu-mobile, .rip-mm2).is-open {
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0) !important;
+  transition: transform var(--rmm-time) var(--rmm-ease),
+              visibility 0s linear 0s;
+}
+html.rip-mm-lock,
+html.rip-mm-lock body { overflow: hidden !important; }
+@media (min-width: 1200px) {
+  :is(.t-rec.uc-rip-menu-mobile, .rip-mm2) { display: none !important; }
+}
+@media (max-width: 1199px) {
+  .uc-rip-header .t396__artboard { z-index: 7000 !important; }
+}
+:is(.t-rec.uc-rip-menu-mobile, .rip-mm2) .t396__artboard {
+  height: auto !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+:is(.t-rec.uc-rip-menu-mobile, .rip-mm2) .rip-mm-viewport {
+  position: relative !important;
+  overflow: hidden !important;
+  height: var(--rmm-vh, auto) !important;
+  transition: height var(--rmm-time) var(--rmm-ease);
+}
+:is(.t-rec.uc-rip-menu-mobile, .rip-mm2) .rip-mm-viewport > .tn-molecule {
+  display: block !important;
+  position: relative !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+}
+:is(.t-rec.uc-rip-menu-mobile, .rip-mm2) .rip-mm-page {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateX(var(--rmm-from, 100%));
+  transition: transform var(--rmm-time) var(--rmm-ease),
+              visibility 0s linear var(--rmm-time);
+  z-index: 1 !important;
+}
+:is(.t-rec.uc-rip-menu-mobile, .rip-mm2) .rip-mm-page.is-active {
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateX(0);
+  z-index: 2 !important;
+  transition: transform var(--rmm-time) var(--rmm-ease),
+              visibility 0s linear 0s;
+}
+:is(.t-rec.uc-rip-menu-mobile, .rip-mm2) .rip-mm-page.is-leaving {
+  visibility: visible;
+  pointer-events: none;
+  transform: translateX(var(--rmm-away, -100%));
+  z-index: 1 !important;
+  transition: transform var(--rmm-time) var(--rmm-ease),
+              visibility 0s linear 0s;
+}
+:is(.t-rec.uc-rip-menu-mobile, .rip-mm2).rmm-measure .rip-mm-viewport,
+:is(.t-rec.uc-rip-menu-mobile, .rip-mm2).rmm-measure .rip-mm-page {
+  transition: none !important;
+}
+:is(.t-rec.uc-rip-menu-mobile, .rip-mm2) .rip-mm-page a:focus-visible,
+:is(.t-rec.uc-rip-menu-mobile, .rip-mm2) .rip-mm-back:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+.rip-mm-back { cursor: pointer; }
+@media (prefers-reduced-motion: reduce) {
+  :is(.t-rec.uc-rip-menu-mobile, .rip-mm2),
+  :is(.t-rec.uc-rip-menu-mobile, .rip-mm2).is-open,
+  :is(.t-rec.uc-rip-menu-mobile, .rip-mm2) .rip-mm-viewport,
+  :is(.t-rec.uc-rip-menu-mobile, .rip-mm2) .rip-mm-page,
+  :is(.t-rec.uc-rip-menu-mobile, .rip-mm2) .rip-mm-page.is-active,
+  :is(.t-rec.uc-rip-menu-mobile, .rip-mm2) .rip-mm-page.is-leaving {
+    transition: none !important;
+  }
+}
+html.rip-editor :is(.t-rec.uc-rip-menu-mobile, .rip-mm2) {
+  position: static !important;
+  left: auto !important;
+  right: auto !important;
+  top: auto !important;
+  bottom: auto !important;
+  height: auto !important;
+  max-height: none !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  overflow: visible !important;
+  transform: none !important;
+  z-index: auto !important;
+}
+html.rip-editor :is(.t-rec.uc-rip-menu-mobile, .rip-mm2) .t396__artboard { height: auto !important; }
+html.rip-editor :is(.t-rec.uc-rip-menu-mobile, .rip-mm2) .rip-mm-viewport {
+  height: auto !important;
+  overflow: visible !important;
+}
+html.rip-editor :is(.t-rec.uc-rip-menu-mobile, .rip-mm2) .rip-mm-page {
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  width: 100% !important;
+  transform: none !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
 .rip-anim-burger-1,
 .rip-anim-burger-2,
 .rip-anim-burger-3 {
-  --rip-time: .38s;
-  --rip-fade: .16s;
-  --rip-ease: cubic-bezier(.4, 0, .2, 1);
+  --rip-burger-time: .38s;
+  --rip-burger-fade: .16s;
+  --rip-burger-ease: cubic-bezier(.4, 0, .2, 1);
   --rip-bx: 0px;
   --rip-by: 0px;
   cursor: pointer;
@@ -42,10 +179,10 @@
   scale: 1 1;
   opacity: 1;
   transition:
-    translate var(--rip-time) var(--rip-ease),
-    rotate    var(--rip-time) var(--rip-ease),
-    scale     var(--rip-time) var(--rip-ease),
-    opacity   var(--rip-fade) linear;
+    translate var(--rip-burger-time) var(--rip-burger-ease),
+    rotate    var(--rip-burger-time) var(--rip-burger-ease),
+    scale     var(--rip-burger-time) var(--rip-burger-ease),
+    opacity   var(--rip-burger-fade) linear;
   will-change: translate, rotate, scale, opacity;
   backface-visibility: hidden;
 }
@@ -63,204 +200,12 @@
 }
 .rip-anim-burger-2 { transition-delay: 0s, 0s, 0s, .18s; }
 .rip-anim-burger-2.rip-anim-open { transition-delay: 0s; }
-.rip-anim-burger-hit {
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-}
-.t-rec:has(.rip-anim-burger-1.rip-anim-open),
-.t-rec:has(.rip-anim-burger-2.rip-anim-open),
-.t-rec:has(.rip-anim-burger-3.rip-anim-open) {
-  z-index: var(--rip-above-z, 7000) !important;
-}
-.rip-anim-measure .rip-anim-burger-1,
-.rip-anim-measure .rip-anim-burger-2,
-.rip-anim-measure .rip-anim-burger-3 { transition: none !important; }
-.rip-anim-burger-1:focus-visible,
-.rip-anim-burger-2:focus-visible,
-.rip-anim-burger-3:focus-visible,
-.rip-anim-burger-hit:focus-visible {
-  outline: 2px solid rgba(255, 255, 255, .75);
-  outline-offset: 3px;
-}
+.rip-menu-burger { -webkit-tap-highlight-color: transparent; }
+.rip-menu-burger:focus-visible { outline: 2px solid rgba(255, 255, 255, .75); outline-offset: 3px; }
 @media (prefers-reduced-motion: reduce) {
   .rip-anim-burger-1,
   .rip-anim-burger-2,
-  .rip-anim-burger-3 { --rip-time: .01s; --rip-fade: .01s; }
-}
-
-/* ===== 03-rip-menu-mobile · Мобильное меню (до 1200px) ===== */
-:root { --rip-mm-css: '3.19'; }
-:is(.rip-mm, .uc-rip-menu-mobile, .t-rec:has(.rip-mm)) {
-  --rip-mm-time: .42s;
-  --rip-mm-ease: cubic-bezier(.4, 0, .2, 1);
-  --rip-mm-in: .34s;
-  --rip-mm-stagger: .06s;
-  --rip-mm-fit: .34s;
-  --rip-mm-z: 6000;
-  position: fixed !important;
-  left: 0 !important;
-  right: 0 !important;
-  top: var(--rip-mm-top, 0px) !important;
-  bottom: auto !important;
-  width: auto !important;
-  height: auto !important;
-  max-height: calc(100vh - var(--rip-mm-top, 0px)) !important;
-  z-index: var(--rip-mm-z, 6000) !important;
-  overflow-x: hidden;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  -webkit-overflow-scrolling: touch;
-  visibility: hidden;
-  opacity: 0 !important;
-  pointer-events: none;
-  transition: visibility 0s linear var(--rip-mm-in),
-              opacity var(--rip-mm-in) var(--rip-mm-ease);
-}
-:is(.rip-mm, .uc-rip-menu-mobile, .t-rec:has(.rip-mm)).is-open {
-  visibility: visible;
-  opacity: 1 !important;
-  pointer-events: auto;
-  transition: visibility 0s linear 0s,
-              opacity var(--rip-mm-in) var(--rip-mm-ease);
-}
-html.rip-mm-lock,
-html.rip-mm-lock body { overflow: hidden !important; }
-html.rip-mm-lock body { padding-right: var(--rip-mm-sb, 0px) !important; }
-@media (min-width: 1201px) {
-  :is(.rip-mm, .uc-rip-menu-mobile, .t-rec:has(.rip-mm)) { display: none !important; }
-}
-.rip-mm .t396 {
-  transform: translate(var(--rip-mm-nav-x, 0%), var(--rip-mm-nav-y, -100%));
-  transition: transform var(--rip-mm-in) var(--rip-mm-ease);
-  will-change: transform;
-}
-.rip-mm.is-open .t396 { transform: translate(0, 0); }
-.uc-rip-header {
-  z-index: 7000 !important;
-}
-.rip-mm.rip-mm-panel {
-  transform: translate(var(--rip-mm-nav-x, 0%), var(--rip-mm-nav-y, -100%)) !important;
-  opacity: 0 !important;
-  transition: transform var(--rip-mm-in) var(--rip-mm-ease),
-              opacity var(--rip-mm-in) var(--rip-mm-ease),
-              visibility 0s linear var(--rip-mm-in);
-  will-change: transform, opacity;
-}
-.rip-mm.rip-mm-panel.is-open {
-  transform: translate(0, 0) !important;
-  opacity: 1 !important;
-  transition: transform var(--rip-mm-in) var(--rip-mm-ease),
-              opacity var(--rip-mm-in) var(--rip-mm-ease),
-              visibility 0s linear 0s;
-}
-.rip-mm.rip-mm-panel .t396 { transform: none; transition: none; will-change: auto; }
-.rip-mm.rip-mm-panel:not(.is-open) .rip-mm-page { visibility: hidden !important; }
-.rip-mm .t396__artboard { min-height: var(--rip-mm-art-h, 0px) !important; }
-.rip-mm .t396__carrier,
-.rip-mm .t396__filter,
-.rip-mm .rip-mm-bg,
-.rip-mm .rip-mm-bg > .tn-atom { height: 100% !important; }
-.rip-mm .rip-mm-bg { top: 0 !important; }
-.rip-mm .rip-mm-viewport { overflow: hidden !important; }
-.rip-mm.rip-mm-fit .rip-mm-viewport {
-  height: var(--rip-mm-vh, auto) !important;
-  transition: height var(--rip-mm-fit, var(--rip-mm-in)) var(--rip-mm-ease);
-}
-.rip-mm.rip-mm-fit.rip-mm-measure .rip-mm-viewport { transition: none !important; }
-.rip-mm .rip-mm-page {
-  visibility: hidden;
-  opacity: 0 !important;
-  pointer-events: none;
-  --rip-mm-plain: calc(var(--rip-mm-dy, 0px) + var(--rip-mm-fly, 0px));
-  transform: translate(var(--rip-mm-side, 0px), var(--rip-mm-plain));
-  transition: transform var(--rip-mm-time) var(--rip-mm-ease),
-              visibility 0s linear var(--rip-mm-time);
-  z-index: 5 !important;
-}
-.rip-mm.rip-mm-y .rip-mm-page { --rip-mm-fly: var(--rip-mm-from, 100%); }
-.rip-mm:not(.rip-mm-y) .rip-mm-page { --rip-mm-side: var(--rip-mm-from, 100%); }
-.rip-mm .rip-mm-page.is-active {
-  visibility: visible;
-  opacity: 1 !important;
-  pointer-events: auto;
-  --rip-mm-fly: 0px;
-  --rip-mm-side: 0px;
-  z-index: 6 !important;
-  transition-delay: var(--rip-mm-stagger), 0s;
-}
-.rip-mm .rip-mm-page.is-leaving {
-  visibility: visible;
-  opacity: 1 !important;
-  pointer-events: none;
-  --rip-mm-fly: var(--rip-mm-away, -100%);
-  --rip-mm-side: var(--rip-mm-away, -100%);
-  transition: transform var(--rip-mm-time) var(--rip-mm-ease);
-  z-index: 6 !important;
-}
-.rip-mobile-menu-accordeon {
-  cursor: pointer;
-  overflow: hidden;
-  transition: height var(--rip-mm-in) var(--rip-mm-ease);
-}
-.rip-mobile-menu-accordeon > .tn-molecule {
-  height: auto !important;
-  transition: gap var(--rip-mm-in) var(--rip-mm-ease),
-              padding var(--rip-mm-in) var(--rip-mm-ease);
-}
-.rip-mobile-menu-accordeon-arrow {
-  transition: rotate var(--rip-mm-in) var(--rip-mm-ease);
-}
-.rip-mobile-menu-accordeon-opened .rip-mobile-menu-accordeon-arrow { rotate: 180deg; }
-.rip-mm-acc-body {
-  overflow: hidden !important;
-  min-height: 0 !important;
-  transition: height var(--rip-mm-in) var(--rip-mm-ease);
-}
-.rip-mm.rip-mm-measure .rip-mm-acc-body { transition: none !important; }
-.rip-mm.rip-mm-measure .rip-mm-page,
-.rip-mm.rip-mm-measure .t396 { transition: none !important; }
-.rip-mm.rip-mm-measure .rip-mobile-menu-accordeon > .tn-molecule { transition: none !important; }
-.rip-mm .rip-mm-close:focus-visible,
-.rip-mm .rip-mm-page a:focus-visible,
-.rip-mm .rip-mm-page [tabindex]:focus-visible {
-  outline: 2px solid currentColor;
-  outline-offset: 3px;
-}
-@media (prefers-reduced-motion: reduce) {
-  :is(.rip-mm, .uc-rip-menu-mobile, .t-rec:has(.rip-mm)),
-  .rip-mm.rip-mm-panel,
-  .rip-mm.rip-mm-panel.is-open,
-  .rip-mm .t396,
-  .rip-mm .rip-mm-page,
-  .rip-mm .rip-mm-page.is-active,
-  .rip-mm .rip-mm-page.is-leaving {
-    transition: none !important;
-  }
-}
-html.rip-editor :is(.rip-mm, .uc-rip-menu-mobile, .t-rec:has(.rip-mm)) {
-  position: static !important;
-  left: auto !important;
-  right: auto !important;
-  top: auto !important;
-  bottom: auto !important;
-  height: auto !important;
-  visibility: visible !important;
-  pointer-events: auto !important;
-  overflow: visible !important;
-  max-height: none !important;
-  z-index: auto !important;
-}
-html.rip-editor .rip-mm .t396 { transform: none !important; }
-html.rip-editor .rip-mm.rip-mm-panel,
-html.rip-editor .rip-mm.rip-mm-panel.is-open { transform: none !important; opacity: 1 !important; }
-html.rip-editor .rip-mm .t396__artboard { min-height: 0 !important; }
-html.rip-editor .rip-mm .rip-mm-viewport { overflow: visible !important; }
-html.rip-editor .rip-mm .rip-mm-page,
-html.rip-editor .rip-mm .rip-mm-page.is-active,
-html.rip-editor .rip-mm .rip-mm-page.is-leaving {
-  transform: none !important;
-  visibility: visible !important;
-  pointer-events: auto !important;
+  .rip-anim-burger-3 { --rip-burger-time: .01s; --rip-burger-fade: .01s; }
 }
 
 /* ===== 04-rip-menu-main · Основное меню (шире 1200px) ===== */
