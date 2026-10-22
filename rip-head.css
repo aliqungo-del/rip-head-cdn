@@ -1,6 +1,6 @@
 /* =====================================================================
    rip-head.css — стили поля «HTML-код для <head>» одним файлом.
-   Версия: 1.0.bee012e2   (дата сборки — в dist/manifest.json)
+   Версия: 1.0.bcd1a8a6   (дата сборки — в dist/manifest.json)
    Источник: head/modules/*.css (порядок — head/modules.json).
    Руками не править: правки затрутся следующей сборкой.
    Состав:
@@ -16,6 +16,7 @@
    12-rip-advantages-slider   6639 симв.  Слайдер «Наши преимущества» (v1.0.0, из репозитория)
    13-header-tab-menu       4466 симв.  Всплывающее меню вкладки шапки (v1.00, из репозитория)
    14-price-programs        9223 симв.  Стоимость обучения: поиск, фильтры, аккордеон
+   15-programs-search       3087 симв.  Поиск по программам в потоке (Zero Block)
    ===================================================================== */
 
 /* ===== 01-header-offset · Отступ под шапку (--rip-h) ===== */
@@ -996,4 +997,86 @@ html.rip-editor :is(.rip-tabmenu, .uc-rip-tabmenu) .t396__artboard {
   :is(.rip-price, .uc-rip-price) .rip-price-option__check {
     transition: none !important;
   }
+}
+
+/* ===== 15-programs-search · Поиск по программам в потоке (Zero Block) ===== */
+.rip-search {
+  --rip-search-css: '1.0.0';
+  --rip-search-time: .18s;
+  --rip-search-ease: cubic-bezier(.4, 0, .2, 1);
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  min-height: 44px;
+}
+.rip-search__input {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  min-height: 44px;
+  margin: 0;
+  padding: 0 48px 0 18px;
+  border: 1px solid #e3e3e3;
+  border-radius: 20px;
+  background: #ffffff;
+  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, .06);
+  color: #000000;
+  font-family: AAStetica, Arial, sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.2;
+  outline: none;
+  transition: border-color var(--rip-search-time) var(--rip-search-ease),
+              box-shadow var(--rip-search-time) var(--rip-search-ease);
+  -webkit-appearance: none;
+  appearance: none;
+}
+.rip-search__input::placeholder { color: #8b8b8b; opacity: 1; }
+.rip-search__input:focus {
+  border-color: #23829a;
+  box-shadow: 0 0 0 3px rgba(35, 130, 154, .12);
+}
+.rip-search__input::-webkit-search-cancel-button,
+.rip-search__input::-webkit-search-decoration { display: none; -webkit-appearance: none; }
+.rip-search__clear {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: #8b8b8b;
+  cursor: pointer;
+  transform: translateY(-50%);
+  transition: color var(--rip-search-time) var(--rip-search-ease),
+              background-color var(--rip-search-time) var(--rip-search-ease);
+}
+.rip-search__clear:hover { color: #000000; background: rgba(0, 0, 0, .06); }
+.rip-search__clear:focus-visible { outline: 2px solid #23829a; outline-offset: 2px; }
+.rip-search__clear[hidden] { display: none; }
+.rip-search__empty { display: none !important; }
+.rip-search__empty[data-rip-empty="y"] { display: block !important; }
+.rip-search__status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+@media screen and (max-width: 639px) {
+  .rip-search__input { font-size: 16px; padding-right: 44px; }
 }
