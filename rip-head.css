@@ -1,6 +1,6 @@
 /* =====================================================================
    rip-head.css — стили поля «HTML-код для <head>» одним файлом.
-   Версия: 1.0.03a26716   (дата сборки — в dist/manifest.json)
+   Версия: 1.0.b3fcd74d   (дата сборки — в dist/manifest.json)
    Источник: head/modules/*.css (порядок — head/modules.json).
    Руками не править: правки затрутся следующей сборкой.
    Состав:
@@ -16,6 +16,7 @@
    13-header-tab-menu       4466 симв.  Всплывающее меню вкладки шапки (v1.00, из репозитория)
    14-price-programs        9223 симв.  Стоимость обучения: поиск, фильтры, аккордеон
    15-programs-search       3087 симв.  Поиск по программам в потоке (Zero Block)
+   17-related-programs       896 симв.  Сопутствующие программы: статичный шаблон карточки
    ===================================================================== */
 
 /* ===== 01-header-offset · Отступ под шапку (--rip-h) ===== */
@@ -1024,4 +1025,18 @@ html.rip-editor :is(.rip-tabmenu, .uc-rip-tabmenu) .t396__artboard {
 }
 @media screen and (max-width: 639px) {
   .rip-search__input { font-size: 16px; padding-right: 44px; }
+}
+
+/* ===== 17-related-programs · Сопутствующие программы: статичный шаблон карточки ===== */
+.rip-related-card--template {
+  display: none !important;
+}
+.rip-related-card {
+  transition: transform .18s ease, box-shadow .18s ease !important;
+}
+@media (hover: hover) {
+  .rip-related-card:hover {
+    transform: scale(1.01);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, .14) !important;
+  }
 }
