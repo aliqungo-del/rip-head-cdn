@@ -1,0 +1,115 @@
+{
+  "generatedAt": "2026-10-24T09:45:00+03:00",
+  "source": "tilda-feed:378708036811 (Тест (Программы))",
+  "note": "Снимок потока для блока «Стоимость обучения». Цена/часы — из полей потока, форма — из поля «Обучение», второй вариант — из «…для второго варианта».",
+  "categories": [
+    "Автодорожное направление, перевозка опасных грузов",
+    "Подготовка и повышение квалификации преподавателей, мастеров производственного обучения и методистов",
+    "Безопасный город, охрана труда, пожарная безопасность, антитеррор, борьба с коррупцией",
+    "Газовое хозяйство, лифтовое хозяйство",
+    "Кадры, подбор персонала и социальная работа",
+    "Право",
+    "Спорт, психология, библиотечное дело и культура",
+    "Экологическая безопасность",
+    "Логистика",
+    "Туризм, гостиничное и ресторанное дело",
+    "Менеджмент и управление",
+    "Кинология",
+    "Агрономия",
+    "Товароведение"
+  ],
+  "programs": [
+    {
+      "id": "udoin8x8u1",
+      "title": "Специалист, ответственный за обеспечение БДД",
+      "url": "/uslugi/c/9/avtodorozhnoe-napravlenie-perevozka-opasnyx-gruzov/specialist",
+      "cats": ["Автодорожное направление, перевозка опасных грузов"],
+      "kind": "Профессиональная переподготовка",
+      "oldPrice": 10000,
+      "sale": 15,
+      "variants": [
+        { "hours": 256, "price": 8500, "form": "Очно" }
+      ],
+      "keys": []
+    },
+    {
+      "id": "6xbyzod2n1",
+      "title": "Контролер техсостояния",
+      "url": "/uslugi/c/9/avtodorozhnoe-napravlenie-perevozka-opasnyx-gruzov/kontroler",
+      "cats": ["Автодорожное направление, перевозка опасных грузов"],
+      "kind": "Профессиональная переподготовка",
+      "oldPrice": 10000,
+      "sale": 15,
+      "variants": [
+        { "hours": 256, "price": 8500, "form": "" }
+      ],
+      "keys": []
+    },
+    {
+      "id": "fa1u712y61",
+      "title": "Повышение квалификации «Безопасность дорожного движения на автомобильном транспорте»",
+      "url": "/uslugi/c/9/avtodorozhnoe-napravlenie-perevozka-opasnyx-gruzov/fa1u712y61-povishenie-kvalifikatsii-bezopasnost-dor",
+      "cats": ["Автодорожное направление, перевозка опасных грузов"],
+      "kind": "Повышение квалификации",
+      "variants": [
+        { "hours": 72, "price": 8500, "form": "" }
+      ],
+      "keys": []
+    },
+    {
+      "id": "zv8i1djnj1",
+      "title": "Профессиональная переподготовка «Организация перевозок опасных грузов автомобильным транспортом»",
+      "url": "/uslugi/c/9/avtodorozhnoe-napravlenie-perevozka-opasnyx-gruzov/zv8i1djnj1-professionalnaya-perepodgotovka-organiza",
+      "cats": ["Автодорожное направление, перевозка опасных грузов"],
+      "kind": "Профессиональная переподготовка",
+      "variants": [
+        { "hours": 520, "price": 12000, "form": "" }
+      ],
+      "keys": []
+    },
+    {
+      "id": "td0pe69dt1",
+      "title": "Профессиональное обучение «Водитель, осуществляющий перевозку опасных грузов (ДОПОГ)»",
+      "url": "/uslugi/c/9/avtodorozhnoe-napravlenie-perevozka-opasnyx-gruzov/td0pe69dt1-professionalnoe-obuchenie-voditel-osusch",
+      "cats": ["Автодорожное направление, перевозка опасных грузов"],
+      "kind": "Профессиональное обучение",
+      "variants": [
+        { "hours": 40, "price": 6000, "form": "" }
+      ],
+      "keys": []
+    },
+    {
+      "id": "v37v8ovyc1",
+      "title": "Повышение квалификации «Транспортная безопасность на автомобильном транспорте»",
+      "url": "/uslugi/c/9/avtodorozhnoe-napravlenie-perevozka-opasnyx-gruzov/v37v8ovyc1-povishenie-kvalifikatsii-transportnaya-b",
+      "cats": ["Автодорожное направление, перевозка опасных грузов"],
+      "kind": "Повышение квалификации",
+      "variants": [
+        { "hours": 72, "price": 8500, "form": "" }
+      ],
+      "keys": []
+    },
+    {
+      "id": "16kfu1ffd1",
+      "title": "Профессиональная переподготовка «Инженер по безопасности дорожного движения»",
+      "url": "/uslugi/c/9/avtodorozhnoe-napravlenie-perevozka-opasnyx-gruzov/16kfu1ffd1-professionalnaya-perepodgotovka-inzhener",
+      "cats": ["Автодорожное направление, перевозка опасных грузов"],
+      "kind": "Профессиональная переподготовка",
+      "variants": [
+        { "hours": 502, "price": 11000, "form": "" }
+      ],
+      "keys": []
+    },
+    {
+      "id": "ijf598j3c1",
+      "title": "Подготовка водителей-наставников",
+      "url": "/uslugi/c/9/avtodorozhnoe-napravlenie-perevozka-opasnyx-gruzov/podgotovka-voditelei-nastavnikov",
+      "cats": ["Автодорожное направление, перевозка опасных грузов"],
+      "kind": "Профессиональное обучение",
+      "variants": [
+        { "hours": 325, "price": 25000, "form": "" }
+      ],
+      "keys": []
+    }
+  ]
+}
