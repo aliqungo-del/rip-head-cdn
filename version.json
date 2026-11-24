@@ -1,15 +1,15 @@
 {
-  "version": "1.0.09abf294",
+  "version": "1.0.e9fd9ef9",
   "files": [
     {
       "name": "rip-head.css",
-      "bytes": 38256,
-      "sha256": "fbfbfa15f100168ffe3f77c296ff3b6943aa33b2f4dbc1689a87a8e6a5f0012b"
+      "bytes": 38663,
+      "sha256": "6b4c52e3673deab3cfa9fe2140d41d0d5159c8cdb0244213e0fb554a3631f0fb"
     },
     {
       "name": "rip-head.js",
       "bytes": 19111,
-      "sha256": "1a44efda603d2cf8b60af528ed34d86fa19f79d16046b0f1d02daca4b869846e"
+      "sha256": "8389e73fde2d1210e0f739cc9741d7cffd3306a5c12449e5205cdd2f7ea6fc48"
     }
   ]
 }
