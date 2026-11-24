@@ -3,6 +3,15 @@
    v2.0.0
 
    ЧТО ДЕЛАЕТ
+     • Две вкладки сверху формы: «Физическое лицо» (по умолчанию — та же
+       форма, что была) и «Юридическое лицо»: текст с адресом почты и
+       кнопка «Скачать форму заявки». Ссылку на форму задаёт CFG.legalFormUrl.
+       На каждой странице выбранная вкладка запоминается на сессию.
+     • Крестик в правом верхнем углу формы закрывает её; Esc — тоже.
+       Работает и в Pop-up Tilda (T1093), и у формы, стоящей на странице
+       прямо в блоке. В Pop-up закрытие уходит в штатный крестик Tilda,
+       поэтому после него форма открывается снова; где прямого крестика
+       нет — форма сворачивается сама (кнопка «Открыть форму»).
      • «Программа обучения» — поле с выпадающим списком и поиском:
        начинаешь печатать — лишние варианты отсеиваются, совпавшие буквы
        подсвечиваются, работают стрелки/Enter/Esc. Ищет по названию, по
@@ -67,7 +76,9 @@
 
   /* ========================= 1. НАСТРОЙКИ ========================= */
   var CFG = {
-    form: '.ripf-form, .uc-rip-form',   /* CSS-класс, который вы задали БЛОКУ формы
+    form: '.ripf-form, .uc-rip-form, .rip-study-form',
+                                        /* CSS-класс, который вы задали БЛОКУ формы
+                                           (rip-study-form — класс блока «заявка на обучение»)
                                            (настройки блока → «Класс» → ripf-form
                                            или uc-rip-form — на сайте сейчас второй).
                                            Скрипт сам найдёт <form> внутри блока;
@@ -118,7 +129,26 @@
     feedAddon2: '[data-fe-post-field="rip-programm-addon2"]',
     feedAddon3: '[data-fe-post-field="rip-programm-addon3"]',
     feedTimeout: 8000,
-    loadingText: 'Загружаем список программ…'
+    loadingText: 'Загружаем список программ…',
+
+    /* ── вкладки «Физ. / юр. лицо», закрытие формы ───────────────── */
+    tabs: true,                         /* false — оставить только физ. лицо */
+    tabPerson: 'Физическое лицо',
+    tabLegal: 'Юридическое лицо',
+    email: 'info@slav-institut.ru',     /* адрес в тексте ветки «юр. лицо» */
+    legalText: 'Скачайте, пожалуйста, форму заявки, заполните ее и направьте нам на электронную почту {email}',
+    legalFileText: 'Ссылка для скачивания формы заявки',
+    /* Подпись кнопки. Пусто — берётся слово из legalFileText
+       (перед ним — картинка значка скачивания). */
+    legalButton: 'Скачать форму заявки',
+    /* Ссылка на файл формы. Пусто — на странице выводится заметная
+       надпись «задайте ссылку в CFG.legalFormUrl», чтобы это не ушло в работу. */
+    legalFormUrl: '',
+    sessionKey: 'rip-form-tab',         /* запоминание вкладки на время сессии */
+
+    close: true,                        /* false — без крестика и Esc */
+    closeTitle: 'Закрыть форму',
+    reopenText: 'Открыть форму'
   };
 
   /* ============== 2. АВАРИЙНЫЙ СПИСОК ПРОГРАММ ==============
@@ -1051,6 +1081,213 @@
     return items;
   }
 
+  /* ============ 4a. ВКЛАДКИ «ФИЗИЧЕСКОЕ / ЮРИДИЧЕСКОЕ ЛИЦО» ============
+     Вкладки, экран юр. лица и крестик — обычные элементы Zero Block: текст,
+     кнопки, поле ввода. Скрипт только переключает видимость и помнит выбор:
+
+       элементы блока помечены именем (настройки элемента → «Имя»):
+         rip-tab-person  вкладка «Физическое лицо»
+         rip-tab-legal   вкладка «Юридическое лицо»
+         rip-legal-box   весь экран юр. лица (текст + кнопка скачивания)
+         rip-form-close  крестик закрытия формы
+
+     Нажали вкладку → у неё добавляется класс ON, у другой снимается; форма
+     прячется классом rip-form_hidden, экран юр. лица показывается (он
+     выключен у себя в блоке классом rip-hidden и включается своим показом).
+
+     Выбранная вкладка помнится на сессию: sessionStorage, а где его нет —
+     cookie. На странице заявка всегда открыта на той вкладке, где человек
+     последний раз был. */
+
+  var C = {
+    person: 'rip-tab-person',
+    legal: 'rip-tab-legal',
+    box: 'rip-legal-box',
+    close: 'rip-form-close',
+    on: 'rip-tab-on',
+    off: 'rip-tab-off',
+    show: 'rip-tab-show'
+  };
+
+  /* все элементы блока с данным признаком: признак ставится КЛАССОМ группы
+     в элементе Zero Block («Класс» группы), не «Именем» */
+  function named(form, name) {
+    var rec = up(form, '.t-rec') || document;
+    return rec.querySelectorAll('.' + name);
+  }
+
+  /* .tn-atom элемента или группы: у него непрозрачность, слой и hover */
+  function atomOf(el) {
+    return up(el, '.tn-atom') || el.querySelector('.tn-atom') || el;
+  }
+
+  /* показать/скрыть наш элемент: класс и opacity у .tn-atom. Выключенный
+     элемент делаем кликабельным через clickable (иначе сюда не доходит клик) */
+  /* Показать/скрыть элемент блока. Скрытый — класс rip-tab-hidden на нём и
+     на его .tn-atom: видимость непрозрачностью на живом блоке ненадёжна
+     (Tilda ставит элементам свой inline opacity), а display:none честно
+     убирает элемент из потока группы. */
+  function show(el, on) {
+    var atom = atomOf(el);
+    addCls(el, on ? C.show : 'rip-tab-hidden');
+    if (on) el.classList.remove('rip-tab-hidden');
+    if (atom.classList) {
+      if (on) atom.classList.remove('rip-tab-hidden');
+      else atom.classList.add('rip-tab-hidden');
+    }
+    if (!el.style) return;
+    if (on) {
+      el.style.display = '';
+      atom.style.display = '';
+      /* элемент не кликабельный (Tilda выключает клики у оверлеев) —
+         кладём в него слой кликов, иначе вкладку не нажать */
+      if (!el.querySelector('.clickable, .t396__elem-clickable')) {
+        var click = document.createElement('div');
+        click.className = 'clickable rip-clickable';
+        el.appendChild(click);
+      }
+    } else {
+      el.style.display = 'none';
+      atom.style.display = 'none';
+    }
+  }
+
+  function formParts(form) {
+    var all = form.querySelectorAll('.t-input-group');
+    var fields = form.querySelector('.t-form__inputsbox');
+    if (!fields && all.length) {
+      fields = [];
+      for (var i = 0; i < all.length; i++) fields.push(all[i]);
+    }
+    /* кнопку ищем по классу: в Zero Block-форме это .tn-form__submit (кнопка
+       .t-submit — уже внутри неё), а у простых форм — .t-form__submit */
+    return {
+      submit: form.querySelector('.tn-form__submit, .t-form__submit, button[type="submit"]'),
+      fields: fields
+    };
+  }
+
+  function hide(el, off) {
+    if (!el) return;
+    var list = (el.length && !el.nodeType) ? el : [el];
+    for (var i = 0; i < list.length; i++) {
+      if (!list[i]) continue;
+      if (off) addCls(list[i], 'rip-form_hidden');
+      else if (list[i].classList) list[i].classList.remove('rip-form_hidden');
+    }
+  }
+
+  function tabFromCookie() {
+    var m = String(document.cookie || '').match(/(?:^|;\s*)rip-form-tab=([^;]*)/);
+    if (!m) return '';
+    try { return decodeURIComponent(m[1]); } catch (e) { return m[1]; }
+  }
+
+  function savedTab() {
+    var v = '';
+    try { v = window.sessionStorage.getItem(CFG.sessionKey) || ''; } catch (e) { v = ''; }
+    return v || tabFromCookie();
+  }
+
+  function saveTab(tab) {
+    var ok = false;
+    try { window.sessionStorage.setItem(CFG.sessionKey, tab); ok = true; } catch (e) { /* нет хранилища */ }
+    if (!ok) document.cookie = CFG.sessionKey + '=' + encodeURIComponent(tab) + '; path=/; SameSite=Lax';
+  }
+
+  function setTab(form, tab, quiet) {
+    if (!form) return;
+    form.setAttribute('data-ripf-tab', tab);
+    if (!quiet) saveTab(tab);
+    var legal = tab === 'legal';
+    var p = formParts(form);
+    /* поля и кнопка отправки живут в ветке физ. лица, экран юр. лица — своего */
+    hide(p.fields, legal);
+    hide(p.submit, legal);
+    var person = named(form, C.person);
+    var legalTab = named(form, C.legal);
+    /* активная вкладка — тёмная (как её собранный вид), неактивная бледнее;
+       подпись есть только через классы, вид полосок задан в head-модуле 08 */
+    paint(person, !legal);
+    paint(legalTab, legal);
+    var box = named(form, C.box);
+    for (var k = 0; k < box.length; k++) show(box[k], legal);
+  }
+
+  function paint(list, active) {
+    for (var i = 0; i < list.length; i++) {
+      var atom = atomOf(list[i]);
+      if (atom.classList) {
+        atom.classList[active ? 'add' : 'remove'](C.on);
+        atom.classList[active ? 'remove' : 'add'](C.off);
+      }
+    }
+  }
+
+  function setupTabs(form) {
+    /* обработчики и класс подписи — один раз; текущую вкладку и раскладку
+       приводим при КАЖДОМ проходе: элементы блока (вкладки, экран, крестик)
+       могут появиться в DOM позже формы */
+    if (form.getAttribute('data-ripf-tabs') !== '1') {
+      form.setAttribute('data-ripf-tabs', '1');
+      addCls(up(form, '.t-rec') || form, 'rip-tabs-on');
+      bindTabs(form);
+    }
+    var want = savedTab() === 'legal' ? 'legal' : 'person';
+    var have = form.getAttribute('data-ripf-tab');
+    if (want === 'legal' || have !== 'legal') setTab(form, want, true);
+  }
+
+  function bindTabs(form) {
+
+    /* клики по вкладкам и крестику — на документе: у элементов Zero Block
+       наш вешатель на сам элемент может не сработать (слой кликов Тильды),
+       а всплытие от вкладки доходит до документа всегда */
+    document.addEventListener('click', function (e) {
+      var t = e.target;
+      var person = up(t, '.' + C.person);
+      var legal = up(t, '.' + C.legal);
+      if (person) { e.preventDefault(); setTab(form, 'person'); return; }
+      if (legal) { e.preventDefault(); setTab(form, 'legal'); return; }
+      var x = up(t, '.' + C.close);
+      if (x) { e.preventDefault(); closeForm(form); }
+    }, false);
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== 'Escape' && e.key !== 'Esc' && e.keyCode !== 27) return;
+      var inField = up(e.target, '.ripf, [name="' + CFG.programField + '"]');
+      if (inField) return;             /* Esc в поле со списком — его дело, не формы */
+      var popup = up(form, '.t-popup');
+      if (popup) {
+        if (!popup.classList.contains('t-popup_show')) return;
+        var btn = popup.querySelector('.t-popup__close-wrapper') || popup.querySelector('.t-popup__close');
+        if (!btn) return;
+        e.preventDefault();
+        btn.click();
+        return;
+      }
+      if (!form.classList.contains('rip-form-closed')) {
+        e.preventDefault();
+        closeForm(form);
+      }
+    }, false);
+  }
+
+  /* закрытие: в Pop-up — штатным крестиком Tilda, иначе — своей кнопкой */
+  function closeForm(form) {
+    var popup = up(form, '.t-popup');
+    if (popup) {
+      var btn = popup.querySelector('.t-popup__close-wrapper') || popup.querySelector('.t-popup__close');
+      if (btn) { btn.click(); return; }
+      return;
+    }
+    /* без Pop-up: сворачиваем форму и убираем пустую полосу */
+    var rec = up(form, '.t-rec') || form;
+    addCls(rec, 'rip-form-off');
+    addCls(form, 'rip-form-closed');
+  }
+
+
   function initForm(form) {
     var nProg = form.querySelector('[name="' + CFG.programField + '"]');
     var nHours = form.querySelector('[name="' + CFG.hoursField + '"]');
@@ -1066,6 +1303,9 @@
     if (nProg.getAttribute('data-ripf') === '1') return true;
     nProg.setAttribute('data-ripf', '1');
     nHours.setAttribute('data-ripf', '1');
+
+    /* вкладки «Физ. / юр. лицо» и закрытие — до сборки полей */
+    setupTabs(form);
 
     /* скрытое поле с типом выбранного варианта: ПК или переподготовка.
        Создаём сами — в форме Tilda отдельного поля для него нет. */
@@ -1087,6 +1327,9 @@
     /* метка версии: по ней видно, чей это контрол (см. resetForeign) */
     prog.el.setAttribute('data-ripf-version', VERSION);
     hours.el.setAttribute('data-ripf-version', VERSION);
+    /* артборд: показать (не флэшить старой формой) и дотянуть высоту под
+       вкладки и экран юр. лица — до того, как Pop-up успел открыться */
+    watchBoard(form);
     if (feedMode) {
       prog.setPlaceholder(CFG.loadingText);      /* не показываем чужой список даже на миг */
       hours.setPlaceholder(CFG.loadingText);
@@ -1228,16 +1471,25 @@
      Он ставит свои контролы и data-ripf, из-за чего наш scan() решил бы, что
      форма уже собрана, и предзаполнение не сработало бы. Поэтому чужую
      сборку снимаем один раз и собираем заново своей версией. */
+  /* элементы, которые ставит наша сборка */
+  var OUR_NODES = '.rip-tabs, .rip-ent, .rip-form-x, .rip-form-reopen';
+
   function resetForeign() {
     var nodes = document.querySelectorAll(CFG.form);
     for (var i = 0; i < nodes.length; i++) {
       var form = nodes[i].tagName === 'FORM' ? nodes[i] : (nodes[i].querySelector('form') || nodes[i]);
+      var stale = [];
       var roots = form.querySelectorAll('.ripf');
       var ours = false;
       for (var r = 0; r < roots.length; r++) {
         if (roots[r].getAttribute('data-ripf-version') === VERSION) ours = true;
       }
       if (ours) continue;
+
+      /* наша сборка живёт и ВНЕ формы (вкладки — над ней), поэтому ищем по блоку */
+      var rec = up(form, '.t-rec') || form;
+      var found = rec.querySelectorAll(OUR_NODES);
+      for (var q = 0; q < found.length; q++) stale.push(found[q]);
 
       for (var k = 0; k < roots.length; k++) {
         if (roots[k].parentNode) roots[k].parentNode.removeChild(roots[k]);
@@ -1246,6 +1498,11 @@
       for (var n = 0; n < natives.length; n++) natives[n].classList.remove('ripf-native');
       var marked = form.querySelectorAll('[data-ripf]');
       for (var m = 0; m < marked.length; m++) marked[m].removeAttribute('data-ripf');
+      /* и наша сборка вкладок/закрытия — иначе останутся два набора вкладок */
+      for (var t = 0; t < stale.length; t++) if (stale[t].parentNode) stale[t].parentNode.removeChild(stale[t]);
+      form.removeAttribute('data-ripf-tabs');
+      form.removeAttribute('data-ripf-tab');
+      form.removeAttribute('data-ripf-close');
       if (roots.length) log('снята сборка старой версии скрипта — собираем заново');
     }
   }
@@ -1257,13 +1514,93 @@
       /* селектор может указывать и на блок, и на саму форму — берём <form> внутри */
       var form = nodes[i].tagName === 'FORM' ? nodes[i] : (nodes[i].querySelector('form') || nodes[i]);
       if (initForm(form)) done++;
+      /* Сборку вкладок приводим КАЖДЫЙ проход: элементы блока (вкладки,
+         экран, крестик) могут появиться в DOM позже формы. Флаг и обработчики
+         ставит setupTabs — повторный проход их не дублирует. */
+      if (form.querySelector('[name="' + CFG.programField + '"]')) setupTabs(form);
     }
     return done;
+  }
+
+  /* ── высота артборда Zero Block, когда низ формы меняет вкладки ──
+     Вкладки и экран юр. лица стоят в потоке формы, поэтому низ артборда
+     зависит от них. Артборд трогаем ТОЛЬКО если он правда виден (Pop-up
+     открыт): у закрытого Pop-up артборд скрыт, а замер там даёт 0 и
+     испортил бы сохранённую высоту (грабля из ZERO-BLOCK-ГРАБЛИ.md).
+     Новую высоту не придумываем, а достраиваем ту, что выставила Тильда,
+     на разницу содержимого — как только содержимое сравнится, мы молчим. */
+
+  function boardOf(form) {
+    var rec = up(form, '.t-rec');
+    return rec ? rec.querySelector('.t396__artboard') : null;
+  }
+
+  function contentH(el) {
+    var kids = el.children;
+    var max = 0;
+    for (var i = 0; i < kids.length; i++) {
+      var k = kids[i];
+      if (window.getComputedStyle) {
+        var pos = getComputedStyle(k).position;
+        if (pos === 'absolute' || pos === 'fixed') continue;
+      }
+      max = Math.max(max, k.offsetTop + k.offsetHeight);
+    }
+    return max;
+  }
+
+  function fits(ab) {
+    if (ab.getAttribute('data-artboard-heightmode') === 'hug') return true;
+    var cs = window.getComputedStyle ? getComputedStyle(ab) : null;
+    if (cs && cs.overflowY === 'visible') return true;
+    if (cs && cs.display === 'none') return true;            /* Pop-up закрыт */
+    return contentH(ab) <= ab.clientHeight + 2;
+  }
+
+  function fitBoard(ab) {
+    if (!ab || ab.getAttribute('data-ripf-h') === '1') return;
+    ab.setAttribute('data-ripf-h', '1');
+    var doFit = function () {
+      /* достраиваем по одному до полного показа: содержимое может расти
+         несколько раз (вкладки → поля → кнопка), а больше нужного не растём */
+      for (var i = 0; i < 6 && !fits(ab); i++) {
+        ab.style.height = (ab.clientHeight + Math.ceil(contentH(ab) - ab.clientHeight)) + 'px';
+      }
+    };
+    doFit();
+    if (!window.MutationObserver) return;
+    var opts = { attributes: true, attributeFilter: ['style', 'class'] };
+    var mo = new MutationObserver(doFit);
+    mo.observe(ab, opts);
+    if (ab.parentNode) mo.observe(ab.parentNode, opts);   /* T396 держит height и у карриера */
+  }
+
+  function watchBoard(form) {
+    var ab = boardOf(form);
+    if (!ab) return;
+    ab.classList.add('rip-tabs-on');        /* снять visibility:hidden head-модуля 08 */
+    if (ab.getAttribute('data-ripf-watched') === '1') return;
+    ab.setAttribute('data-ripf-watched', '1');
+    fitBoard(ab);
   }
 
   function boot() {
     resetForeign();
     scan();
+    showBoards();
+  }
+
+  /* артборды форм показываем сразу после первой сборки: до неё у них стоит
+     visibility:hidden из head-модуля 08 (иначе Pop-up флэшит формой без
+     вкладок). Форма, которую не собрали, показать тоже надо — лучше без
+     вкладок, чем невидимая. */
+  function showBoards() {
+    var nodes = document.querySelectorAll('.t-rec .t396__artboard:not(.rip-tabs-on)');
+    for (var i = 0; i < nodes.length; i++) {
+      var rec = up(nodes[i], '.t-rec');
+      if (!rec || !rec.querySelector('form')) continue;
+      nodes[i].classList.add('rip-tabs-on');
+    }
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
@@ -1310,7 +1647,13 @@
     scan: function () { resetForeign(); return scan(); },
     context: function () { return resolveContext(); },
     uid: pageUid,
-    link: programLink
+    link: programLink,
+    /* вкладка «физ./юр. лицо» — для тестов и отладки из консоли */
+    tab: function (form) { var f = form || document.querySelector(CFG.form); return f ? f.getAttribute('data-ripf-tab') : null; },
+    setTab: function (tab, form) { var f = form || document.querySelector(CFG.form); if (f) setTab(f, tab); },
+    saveTab: saveTab,
+    savedTab: savedTab,
+    savedTabFromCookie: tabFromCookie
   };
   window.RIPF = api;
 
@@ -1321,4 +1664,3 @@
   window.addEventListener('load', expose);
   setTimeout(expose, 1500);
 })();
-
